@@ -16,4 +16,5 @@ This is an overview of the start/finish design choices and configurations for de
 
 ### Disk Layout
 ![Disk Layout](./images/disk_layout.png)
+
 *Overview of disk layout, ZFS mirrors*
