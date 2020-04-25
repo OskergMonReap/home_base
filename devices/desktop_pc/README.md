@@ -14,3 +14,6 @@ This is an overview of the start/finish design choices and configurations for de
 | BeQuiet SilentWings 140mm (x2) |
 | BeQuiet SilentWings 120mm (x3) |
 
+### Disk Layout
+![Disk Layout](./images/disk_layout.png)
+*Overview of disk layout, ZFS mirrors*
