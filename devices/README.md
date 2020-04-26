@@ -2,6 +2,6 @@
 
 | Device | Sections |
 | :--- | :--- |
-| Desktop | - [Disk Layout](./sections/desktop/disks)</br>- [Dotfiles](./sections/desktop/dotfiles) |
-| Laptop | - [Disk Layout](./sections/laptop/disks)</br>- [Dotfiles](./sections/laptop/dotfiles) |
-| Base Pi | - [Setup](./sections/pi/disks)</br>- [Disk Layout](./sections/pi/disks)</br>- [Doftfiles](./sections/pi/dotfiles)
+| Desktop | - [Disk Layout](./desktop_pc/sections/disks)</br>- [Dotfiles](./desktop_pc/sections/dotfiles) |
+| Laptop | - [Disk Layout](./laptop/sections/disks)</br>- [Dotfiles](./laptop/sections/dotfiles) |
+| Base Pi | - [Setup](./pi/sections/disks)</br>- [Disk Layout](./pi/sections/disks)</br>- [Doftfiles](./pi/sections/dotfiles)
