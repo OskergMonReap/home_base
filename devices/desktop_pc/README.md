@@ -18,3 +18,13 @@ This is an overview of the start/finish design choices and configurations for de
 ![Disk Layout](./images/disk_layout.png)
 
 *Overview of disk layout, ZFS mirrors*
+
+Root will sit on ZFS VDEV mirror, between two Sabrent 4.0 Rocket 1 TB drives. The tentative partitioning is below:
+| Location | Size of Partition |
+| :--- | :--- |
+| /var | 450 GB |
+| /opt | 20 GB |
+| /tmp | 30 GB |
+| /home | 500 GB |
+
+An additional two VDEV mirrors will contain `/backups` and `/plex` directories respectively. Each of these VDEV's will consist of two Crucial MX500 1 TB SSD's, mirrored under ZFS. The `/backups` mirrored VDEV will be utilized for ZFS snapshots and Borgbackup incremental backups. The `/plex` mirrored VDEV will be solely for **PLEX**, which will be dockerized on the host.
