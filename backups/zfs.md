@@ -33,7 +33,12 @@ zfs destroy zpool/data@2020-09-05
 ### Roll Back
 
 Using the ZFS command `zfs rollback` we can restore the active filesystem to a snapshot. This will delete all changes made since the snapshot was created, reverting the active filesystem to that point in time. Command structure remains the same, passing the name of the snapshot to the `rollback` command.
+```
+zfs rollback -r zpool/data@2020-09-05
+```
+> Any snapshots made after the snapshot you have rolled back to must be deleted
+> By passing the `-r` flag to the `zfs rollback` command, this is automatically taken care of for you
 
 ## Managing Snapshots Automatically
 
-There are a myriad of tools available to manage ZFS snapshots on our behalf, from simple bash scripts that are distributed for general use to software solutions. After reviewing several options, the sanoid/syncoid solution was chosen for its reliability, rich feature set and ability to manage snapshots and replication independently.
+There are a myriad of tools available to manage ZFS snapshots on our behalf, from simple bash scripts that are distributed for general use to software solutions. After reviewing several options, the `sanoid`/`syncoid` solution was chosen for its reliability, rich feature set and ability to manage snapshots and replication independently.
