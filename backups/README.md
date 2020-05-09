@@ -8,6 +8,6 @@ Backups have three tiers for personal devices; file, block and hardware levels.
 | Backup Level | Technology Used |
 | :--- | :--- |
 | File | [Borgbackup](borg_backup.md) |
-| Block | [ZFS](zfs.md) |
+| Block | [ZFS, sanoid, syncoid](zfs.md) |
 | Hardware | [ZFS mirrors](zfs_mirror.md) |
 
