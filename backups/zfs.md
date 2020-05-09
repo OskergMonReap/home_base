@@ -36,7 +36,7 @@ Using the ZFS command `zfs rollback` we can restore the active filesystem to a s
 ```
 zfs rollback -r zpool/data@2020-09-05
 ```
-> Any snapshots made after the snapshot you have rolled back to must be deleted
+> Any snapshots made after the snapshot you have rolled back to must be deleted.
 > By passing the `-r` flag to the `zfs rollback` command, this is automatically taken care of for you
 
 ## Managing Snapshots Automatically
