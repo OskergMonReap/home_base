@@ -41,4 +41,44 @@ zfs rollback -r zpool/data@2020-09-05
 
 ## Managing Snapshots Automatically
 
-There are a myriad of tools available to manage ZFS snapshots on our behalf, from simple bash scripts that are distributed for general use to software solutions. After reviewing several options, the `sanoid`/`syncoid` solution was chosen for its reliability, rich feature set and ability to manage snapshots and replication independently.
+There are a myriad of tools available to manage ZFS snapshots on our behalf, from simple bash scripts that are distributed for general use to software solutions. After reviewing several options, the `sanoid`/`syncoid` solution was chosen. With sanoid equiring just a single cron job and a TOML config file, and syncoid being command based making it easy to script/schedule.
+
+Sample `sanoid` crontab entry:
+```
+* * * * * TZ=UTC /usr/local/bin/sanoid --cron
+```
+
+Configuration file `/etc/sanoid/sanoid.conf`:
+```
+[zroot/home]
+	use_template = production
+[zroot/backups]
+	use_template = production
+	recursive = yes
+	process_children_only = yes
+[zroot/backups/e5470]
+	hourly = 4
+
+#############################
+# templates below this line #
+#############################
+
+[template_production]
+        frequently = 0
+        hourly = 36
+        daily = 30
+        monthly = 3
+        yearly = 0
+        autosnap = yes
+        autoprune = yes
+```
+
+Syncoid push command for asynchronous incremental replication, local filesystems (ie backup pool on host machine):
+```
+syncoid zroot/data backups/data
+```
+
+Syncoid push command to remote host:
+```
+syncoid zroot/data root@1.1.1.1:/backups/data
+```
