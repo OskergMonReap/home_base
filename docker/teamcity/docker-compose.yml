@@ -9,7 +9,7 @@ services:
                         - teamcity_ci_log:/opt/teamcity/logs
                         - /var/run/docker.sock:/var/run/docker.sock
         teamcity-agent-1:
-                build: ./team_city_build_agent_configs/
+                build: ./build_agent/
                 environment:
                         - SERVER_URL=http://server:8111
                         - AGENT_NAME="docker_test"
@@ -17,7 +17,7 @@ services:
                         - teamcity_agent_test_branch:/data/teamcity_agent/conf
                         - /var/run/docker.sock:/var/run/docker.sock
         teamcity-agent-2:
-                build: ./team_city_build_agent_configs/
+                build: ./build_agent/
                 environment:
                         - SERVER_URL=http://server:8111
                         - AGENT_NAME="docker_dev"
