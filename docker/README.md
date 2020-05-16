@@ -8,4 +8,4 @@ Docker is used to host applications for local use, reachable only via home netwo
 | Anchore | [anchore-compose.yml](anchore-compose.yml) |
 | ELK Stack | |
 | Plex | |
-| TeamCity | |
+| TeamCity | [teamcity.yml](./teamcity/docker-compose.yml) |
