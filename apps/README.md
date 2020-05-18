@@ -14,4 +14,11 @@ Plex is a client-server media player system used to organize and stream video, a
 
 ### TeamCity
 
-TeamCity is a free CI/CD offering from JetBrains, the makers of PyCharm and a myriad of other great IDE's. TeamCity can be deployed and managed easily with `docker-compose` and configured via GUI.
+TeamCity is a free CI/CD offering from JetBrains, the makers of PyCharm and a myriad of other great IDE's. TeamCity can be deployed and managed easily with `docker-compose` and configured via GUI. This will be tied into all local/github repo's in order to provide, at minimum, unit tests for every applicable code base.
+
+### ELK Stack
+The ELK stack is a combination of open source Elastic products; Elasticsearch, Logstash and Kibana.
+- Elasticsearch is a distributed, RESTful, JSON-based search engine
+- Logstash is an ingest pipeline product for logs
+- Kibana is a flexible visualization tool for your data
+
