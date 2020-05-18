@@ -6,6 +6,6 @@ Docker is used to host applications for local use, reachable only via home netwo
 | Application | `docker-compose` File |
 | --- | --- |
 | Anchore | [anchore-compose.yml](anchore-compose.yml) |
-| ELK Stack | |
+| ELK Stack | [elastic-compose.yml](./elk_stack/docker-compose.yml) |
 | Plex | [plex-compose.yml](plex-compose.yml) |
 | TeamCity | [teamcity.yml](./teamcity/docker-compose.yml) |
