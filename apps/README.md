@@ -21,6 +21,7 @@ The ELK stack is a combination of open source Elastic products; Elasticsearch, L
 - Elasticsearch is a distributed, RESTful, JSON-based search engine
 - Logstash is an ingest pipeline product for logs
 - Kibana is a flexible visualization tool for your data
+
 These services are then augmented with the *Beats* family of products that will be used to gather even more data in an easily configurable manor.
 - Metricbeat allows metrics from any given host with the "agent" installed to ship metric data to ELK stack
 - Auditbeat allows shipment of security related data, such as login attempts and unusual processes
