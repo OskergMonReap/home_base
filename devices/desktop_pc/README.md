@@ -19,7 +19,7 @@ This is an overview of the start/finish design choices and configurations for de
 
 *Overview of disk layout, ZFS mirrors*
 
-Root will sit on ZFS VDEV mirror, between two Sabrent 4.0 Rocket 1 TB drives. The tentative partitioning is below:
+Root will sit on ZFS VDEV mirror, between two Sabrent 4.0 Rocket 1 TB drives. The tentative partitioning is below, however this is for a mental model as ZFS dynamically handles "partition" sizes in the form of datasets:
 | Location | Size of Partition |
 | :--- | :--- |
 | /var | 450 GB |
