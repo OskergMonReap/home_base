@@ -41,7 +41,7 @@ zfs rollback -r zpool/data@2020-09-05
 
 ## Managing Snapshots Automatically
 
-There are a myriad of tools available to manage ZFS snapshots on our behalf, from simple bash scripts that are distributed for general use to software solutions. After reviewing several options, the `sanoid`/`syncoid` solution was chosen. With sanoid equiring just a single cron job and a TOML config file, and syncoid being command based making it easy to script/schedule.
+There are a myriad of tools available to manage ZFS snapshots on our behalf, from simple bash scripts that are distributed for general use to software solutions. After reviewing several options, the `sanoid`/`syncoid` solution was chosen. With sanoid requiring just a single cron job and a TOML config file, and syncoid being command based making it easy to script/schedule.
 
 Sample `sanoid` crontab entry:
 ```
