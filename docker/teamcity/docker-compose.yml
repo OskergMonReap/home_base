@@ -1,36 +1,52 @@
 version: "3"
 services:
-        server:
-                image: jetbrains/teamcity-server
-                ports:
-                        - "8111:8111"
-                volumes:
-                        - teamcity_ci_data:/data/teamcity_server/datadir
-                        - teamcity_ci_log:/opt/teamcity/logs
-                        - /var/run/docker.sock:/var/run/docker.sock
-        teamcity-agent-1:
-                build: ./build_agent/
-                environment:
-                        - SERVER_URL=http://server:8111
-                        - AGENT_NAME="docker_test"
-                volumes:
-                        - teamcity_agent_test_branch:/data/teamcity_agent/conf
-                        - /var/run/docker.sock:/var/run/docker.sock
-        teamcity-agent-2:
-                build: ./build_agent/
-                environment:
-                        - SERVER_URL=http://server:8111
-                        - AGENT_NAME="docker_dev"
-                volumes:
-                        - teamcity_agent_development_branch:/data/teamcity_agent/conf
-                        - /var/run/docker.sock:/var/run/docker.sock
+  server:
+    restart: unless-stopped
+    image: jetbrains/teamcity-server
+    ports:
+      - "8111:8111"
+    volumes:
+      - teamcity_ci_data:/data/teamcity_server/datadir
+      - teamcity_ci_log:/opt/teamcity/logs
+      - /var/run/docker.sock:/var/run/docker.sock
+  teamcity-agent-1:
+    restart: unless-stopped
+    build: ./teamcity_buildagent_configs/
+    environment:
+      - SERVER_URL=http://server:8111
+      - AGENT_NAME="docker_test"
+    volumes:
+      - teamcity_agent_test_branch:/data/teamcity_agent/conf
+      - /var/run/docker.sock:/var/run/docker.sock
+  teamcity-agent-2:
+    restart: unless-stopped
+    build: ./teamcity_buildagent_configs/
+    environment:
+      - SERVER_URL=http://server:8111
+      - AGENT_NAME="docker_dev"
+    volumes:
+      - teamcity_agent_development_branch:/data/teamcity_agent/conf
+      - /var/run/docker.sock:/var/run/docker.sock
+  postgres_teamcity:
+    restart: unless-stopped
+    image: postgres
+    environment:
+      - POSTGRES_USER=oskr_grme
+      - POSTGRES_PASSWORD=BFRTHA8xyq%2QjWg#5s5
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+
 
 volumes:
-        teamcity_ci_data:
-                external: true
-        teamcity_ci_log:
-                external: true
-        teamcity_agent_test_branch:
-                external: true
-        teamcity_agent_development_branch:
-                external: true
+  teamcity_ci_data:
+    external: true
+  teamcity_ci_log:
+    external: true
+  teamcity_agent_test_branch:
+    external: true
+  teamcity_agent_development_branch:
+    external: true
+  postgres_db:
+    external: true
