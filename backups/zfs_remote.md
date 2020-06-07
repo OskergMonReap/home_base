@@ -9,7 +9,7 @@ The following steps will be scripted, however these are the individual steps tha
 1. Utilize `zfs send` with pipes to generate our snapshot in file format. The command will consist of two seperate pipes, first the `send` command will be piped to `gzip` to add compression, and finally `gzip` output will be piped to `openssl` to encrypt the compressed file.
 
 ```
-zfs send zroot/home@autosnap_2020-06-07_20:30:01_hourly | gzip | openssl enc -pbkdf2 -a -salt > /backups/zfs/cloud/zroot_home_2020-06-07.gz.ssl
+zfs send zroot/home@autosnap_2020-06-07_20:30:01_hourly | gzip -9 | openssl enc -pbkdf2 -a -salt > /backups/zfs/cloud/zroot_home_2020-06-07.gz.ssl
 ```
 
 2. Finally, the compressed/encrypted file will be sent to *Amazon S3* via `aws cli` commands. 
@@ -32,3 +32,8 @@ The above is perfectly usable, however it has flaws as is that we need to addres
 > For example, parse file name for date, and then generate the new path for upload with it as prefix
 > `2020-06-07/zroot_home.gz.ssl`, notice we dropped the redundant date from our actual file during upload
 
+Additional steps to implement:
+1. Implement a config file for script, possibly just ENV variables or allow TOML/YAML config
+2. Logic to determine the most recent snapshot
+3. Lifecycle policies to transition to `Amazon Glacier`
+4. Test `AWS Storage Gateway` implementation for cost/efficiency
