@@ -11,3 +11,13 @@ The following steps will be scripted, however these are the individual steps tha
 ```
 zfs send zroot/home@autosnap_2020-06-07_20:30:01_hourly | gzip | openssl enc -aes-256-cbc -a -salt > /backups/zfs/cloud/zroot_home_2020-06-07.gz.ssl
 ```
+
+2. Finally, the compressed/encrypted file will be sent to *Amazon S3* via `aws cli` commands. 
+
+First, to make use of more of our machines bandwidth we will adjust the default `max_concurrent_requests` for *S3* with the below command, this only needs to be ran once so we perform this step manually:  
+`aws configure set default.s3.max_concurrent_requests 20`
+
+Now, since the `aws cli` is intelligent enough to automatically utilize multipart upload for large files, we just run the `cp` command and let the tooling do the rest:
+```
+aws s3 cp /backups/zfs/cloud/zroot_home_2020-06-07.gz.ssl s3://zfs-repo/zroot_home_2020-06-07.gz.ssl
+```
