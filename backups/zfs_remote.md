@@ -9,7 +9,7 @@ The following steps will be scripted, however these are the individual steps tha
 1. Utilize `zfs send` with pipes to generate our snapshot in file format. The command will consist of two seperate pipes, first the `send` command will be piped to `gzip` to add compression, and finally `gzip` output will be piped to `openssl` to encrypt the compressed file.
 
 ```
-zfs send zroot/home@autosnap_2020-06-07_20:30:01_hourly | gzip | openssl enc -aes-256-cbc -a -salt > /backups/zfs/cloud/zroot_home_2020-06-07.gz.ssl
+zfs send zroot/home@autosnap_2020-06-07_20:30:01_hourly | gzip | openssl enc -pbkdf2 -a -salt > /backups/zfs/cloud/zroot_home_2020-06-07.gz.ssl
 ```
 
 2. Finally, the compressed/encrypted file will be sent to *Amazon S3* via `aws cli` commands. 
