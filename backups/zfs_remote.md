@@ -21,3 +21,14 @@ Now, since the `aws cli` is intelligent enough to automatically utilize multipar
 ```
 aws s3 cp /backups/zfs/cloud/zroot_home_2020-06-07.gz.ssl s3://zfs-repo/zroot_home_2020-06-07.gz.ssl
 ```
+
+### Script Considerations
+The above is perfectly usable, however it has flaws as is that we need to address with our script:
+1. We have to know the snapshot name, which are typically long and unintuitive to simply type out
+> Generate a list of snapshots and allow interactive selection which will automatically add the snapshot to our send command
+
+2. As it stands, all snapshot files will be uploaded to a flat bucket structure. When the need to restore from one of these arises, it places the burden on the user to comb through an unwieldy list
+> Create a path structure, based on date, for each object before upload
+> For example, parse file name for date, and then generate the new path for upload with it as prefix
+> `2020-06-07/zroot_home.gz.ssl`, notice we dropped the redundant date from our actual file during upload
+
