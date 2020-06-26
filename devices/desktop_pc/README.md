@@ -28,3 +28,6 @@ Root will sit on ZFS VDEV mirror, between two Sabrent 4.0 Rocket 1 TB drives. Th
 | /home | 500 GB |
 
 An additional two VDEV mirrors will contain `/backups` and `/plex` directories respectively. Each of these VDEV's will consist of two Crucial MX500 1 TB SSD's, mirrored under ZFS. The `/backups` mirrored VDEV will be utilized for ZFS snapshots and Borgbackup incremental backups. The `/plex` mirrored VDEV will be solely for **PLEX**, which will be dockerized on the host.
+
+> **PENDING**
+Borgbackups may be removed entirely, once all machines are migrated to ZFS and a smooth process is determined (likely script) to mount snapshots in order to browse and pull documents from different points in time.
