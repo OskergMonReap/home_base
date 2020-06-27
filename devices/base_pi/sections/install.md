@@ -23,3 +23,30 @@ This tool does have some dependencies, so be sure to install the below list of p
 - `unzip` - extract zip files
 - `hdparm` - required to run the program
 
+#### Cloud-Init
+TO-DO --- add user-data and metadata yaml files to repo, explain snippets within this document 
+
+
+#### OS Setup (if using as desktop, typically I use as headless)
+I'm an i3 fanboy, I despise using a mouse for w/e reason.. Below are the steps I've used to get i3 up and running on my Pi's
+
+Install i3-wm (if you want up to date, build from source)
+```
+sudo apt install i3-wm
+```
+Edit the desktop config file located at `~/.config/lxsession/LXDE-pi/desktop.conf` and edit the window manager to match below:
+```
+[Session]
+window_manager=i3wm-pi
+```
+Create new file and make it executable at `/usr/bin/i3wm-pi` with following contents:
+```
+#!/bin/bash
+exec i3
+```
+Finally, edit `~/.config/lxsession/LXDE-pi/autostart` by commenting out the following lines:
+```
+# @lxpanel --profile LXDE-pi
+# @pcmanfm --desktop --profile LXDE-pi
+```
+Now just edit i3 config to your liking
