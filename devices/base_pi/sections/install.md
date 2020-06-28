@@ -26,6 +26,7 @@ This tool does have some dependencies, so be sure to install the below list of p
 #### Cloud-Init
 TO-DO --- add user-data and metadata yaml files to repo, explain snippets within this document 
 
+## Optional Graphical Setup (debian/ubuntu based distro's)
 
 #### OS Setup (if using as desktop, typically I use as headless)
 I'm an i3 fanboy, I despise using a mouse for w/e reason.. Below are the steps I've used to get i3 up and running on my Pi's
