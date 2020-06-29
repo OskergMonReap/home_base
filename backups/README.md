@@ -11,3 +11,7 @@ Backups have three tiers for personal devices; file, block and hardware levels.
 | Block | [ZFS, sanoid, syncoid](zfs.md) |
 | Hardware | [ZFS mirrors](zfs_mirror.md) |
 
+#### TO-DO
+Offsite backups
+> Investigate AWS Storage Gateway (Volume Gateway) with ZFS to allow snapshots to automatically be synced to S3
+> Investigate script to spin up EC2 instance from AMI (with ZFS enabled and an EBS volume mounted via ZFS), use syncoid to replicate to EC2, take EBS snapshot and then tear down the instance to save on costs
