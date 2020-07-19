@@ -10,6 +10,7 @@ Backups have three tiers for personal devices; file, block and hardware levels.
 | File | [Borgbackup](borg_backup.md) |
 | Block | [ZFS, sanoid, syncoid](zfs.md) |
 | Hardware | [ZFS mirrors](zfs_mirror.md) |
+| Remote | [Cloud Storage](cloud_backup.md) |
 
 #### TO-DO
 Offsite backups
@@ -17,4 +18,4 @@ Offsite backups
 >
 > Investigate script to spin up EC2 instance from AMI (with ZFS enabled and an EBS volume mounted via ZFS cachefile), use syncoid to replicate to EC2, take EBS snapshot and then tear down the instance to save on costs
 >
-> If offsite backups end up being a rare (monthly, or even every few months) then considering piping a `zfs send` command directly to the `aws cp -` command to simply send the ZFS snapshot directly to a file on s3.. this would allow super simple script along with compression/encryption inline.. Once my move to new apartment is done and I have full gig, need to test feasability of this method... likely a non-started, but you never know!
+> If offsite backups end up being a rare (monthly, or even every few months) then considering piping a `zfs send` command directly to the `aws cp -` command to simply send the ZFS snapshot directly to a file on s3.. this would allow super simple script along with compression/encryption inline..
