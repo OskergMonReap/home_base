@@ -9,3 +9,23 @@ Design:
   - Use Cloudformation to spin up EC2 instance in us-east-2 based on our custom AMI
   - Verify server is up/reachable, trigger syncoid to replicate ZFS snapshots to the instance
   - Delete Cloudformation stack
+
+Benefits:
+- Incremental backups, push only what has changed
+- EBS Snapshots for point in time backups
+- Ephemeral server to keep cost down while keeping transfer speeds respectable
+
+### Solution 2
+Design:
+- One-liner commandline alias/script that pipes `zfs send` to:
+  - `gzip` for compression
+  - `openssl` for encryption
+  - `aws-cli` to stream directly into S3 bucket
+ ```
+ zfs send -R zroot/home@autosnap | gzip -9 | openssl enc -aes-256-cbc -a -salt -pbkdf2 SomePassword | aws s3 cp --expected-size 400000000 - s3://zfs-repo/zroot_home.gz.ssl
+ ```
+ 
+ Benefits:
+ - Simplicity of single command/script
+ - S3 with lifecycle management automation
+ - Encrypted pre-flight
