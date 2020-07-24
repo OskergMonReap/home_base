@@ -29,3 +29,17 @@ Design:
  - Simplicity of single command/script
  - S3 with lifecycle management automation
  - Encrypted pre-flight
+
+### Solution 3
+#### 3A
+Design:
+- AWS Storage Gateway as VM on Desktop PC
+  - Always on, or triggered by script TBD
+- Mount /backups (which correlates to `zback` ZFS pool which is a mirror of two drives) to VM
+- Let the Storage Gateway replicate to S3
+
+#### 3B
+Design:
+- AWS Storage Gateway on Raspberry Pi 4 w/ 4 SATA drives configured as 2 ZFS mirrored pools
+- Replicate /backups (which correlates to `zback` ZFS pool on desktop) to the Pi
+- Let the Storage Gateway replicate to S3
