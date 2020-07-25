@@ -22,7 +22,7 @@ Design:
   - `openssl` for encryption
   - `aws-cli` to stream directly into S3 bucket
  ```
- zfs send -R zroot/home@autosnap | gzip -9 | openssl enc -aes-256-cbc -a -salt -pbkdf2 SomePassword | aws s3 cp --expected-size 400000000 - s3://zfs-repo/zroot_home.gz.ssl
+ zfs send -R zroot/home@autosnap | gzip -9 | openssl enc -aes-256-cbc -a -salt -k SomePassword | aws s3 cp --expected-size 400000000 - s3://zfs-repo/zroot_home.gz.ssl
  ```
  
  Benefits:
