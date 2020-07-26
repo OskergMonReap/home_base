@@ -11,38 +11,13 @@ Parameters:
   ClientIPCIDR:
     Type: String
     Default: 0.0.0.0/0
+    AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
     Description: CIDR IP to be granted access by the SG, use 0.0.0.0/0 to accept all IPs
 
 Mappings:
   RegionMap:
-    us-east-1:
-      "AMAZONLINUXAMI" : "ami-8c1be5f6" # Amazon Linux AMI 2017.09
     us-east-2:
-      "AMAZONLINUXAMI" : "ami-c5062ba0" # Amazon Linux AMI 2017.09
-    us-west-1:
-      "AMAZONLINUXAMI" : "ami-02eada62" # Amazon Linux AMI 2017.09
-    us-west-2:
-      "AMAZONLINUXAMI" : "ami-e689729e" # Amazon Linux AMI 2017.09
-    ca-central-1:
-      "AMAZONLINUXAMI" : "ami-fd55ec99" # Amazon Linux AMI 2017.09
-    eu-west-1:
-      "AMAZONLINUXAMI" : "ami-acd005d5" # Amazon Linux AMI 2017.09
-    eu-central-1:
-      "AMAZONLINUXAMI" : "ami-c7ee5ca8" # Amazon Linux AMI 2017.09
-    eu-west-2:
-      "AMAZONLINUXAMI" : "ami-1a7f6d7e" # Amazon Linux AMI 2017.09
-    ap-southeast-1:
-      "AMAZONLINUXAMI" : "ami-0797ea64" # Amazon Linux AMI 2017.09
-    ap-southeast-2:
-      "AMAZONLINUXAMI" : "ami-8536d6e7" # Amazon Linux AMI 2017.09
-    ap-northeast-2:
-      "AMAZONLINUXAMI" : "ami-9bec36f5" # Amazon Linux AMI 2017.09
-    ap-northeast-1:
-      "AMAZONLINUXAMI" : "ami-2a69be4c" # Amazon Linux AMI 2017.09
-    ap-south-1:
-      "AMAZONLINUXAMI" : "ami-4fc58420" # Amazon Linux AMI 2017.09
-    sa-east-1:
-      "AMAZONLINUXAMI" : "ami-f1344b9d" # Amazon Linux AMI 2017.09
+      "AMAZONLINUXAMI" : "ami-09c7422ca816f0bc1" # ZFS/sanoid enabled Ubuntu 20.04
 
 Resources:
 
@@ -53,7 +28,7 @@ Resources:
       CidrBlock: 10.0.0.0/22 # We only need 1 IPaddress for our OpenVPN server, I just like even numbers and 8-bit subnets
       Tags:
       - Key: Name
-        Value: personal-OpenVPN-vpc
+        Value: OpenVPN-vpc
 
   # The only subnet we will create within our VPC, our OpenVPN server will be provisioned within
   # This subnet will be assigned a default route out to the internet, hence the name.
@@ -64,7 +39,7 @@ Resources:
       CidrBlock: 10.0.0.0/24 # 8-bit subnet provides 256 addresses, 251 of which are usable
       Tags:
       - Key: Name
-        Value: personal-OpenVPN-publicSubnet
+        Value: OpenVPN-publicSubnet
 
   # We will need our VPC to have access to the internet
   myInternetGateway:
@@ -72,7 +47,7 @@ Resources:
       Properties:
         Tags:
         - Key: Name
-          Value: personal-OpenVPN-myIGW
+          Value: OpenVPN-myIGW
 
   # The VPC route table
   myRouteTablePublic:
@@ -81,7 +56,7 @@ Resources:
         VpcId: !Ref myVPC
         Tags:
           - Key: Name
-            Value: personal-OpenVPN-myRouteTablePublic
+            Value: OpenVPN-myRouteTablePublic
 
   # Attach the Internet Gateway to myVPC
   AttachInternetGateway:
@@ -93,7 +68,6 @@ Resources:
   # Add a default route to our VPCs internet gateway
   RouteDefaultPublic:
     Type: "AWS::EC2::Route"
-    DependsOn: myInternetGateway
     Properties:
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref myInternetGateway
@@ -201,7 +175,7 @@ Resources:
       NetworkInterfaces:
         -
           NetworkInterfaceId: !Ref myNetworkInterface
-          DeviceIndex: 0
+          DeviceIndex: '0'
       IamInstanceProfile: !Ref ec2InstanceProfile
       Tags:
         -
@@ -296,8 +270,8 @@ Resources:
             02_generate_secrets_update_build-ca:
               cwd: "/opt/easy-rsa"
               test: "test -e /opt/easy-rsa/build-ca"
-              command: !Sub |
-                sed -i 's/--interact//g' /opt/easy-rsa/build-ca
+              command:
+                - sed -i 's/--interact//g' /opt/easy-rsa/build-ca
             03_generate_secrets_run_build-ca:
               cwd: "/opt/easy-rsa"
               test: "test -e /opt/easy-rsa/build-ca"
@@ -309,8 +283,8 @@ Resources:
             05_generate_secrets_update_build-key-server:
               cwd: "/opt/easy-rsa"
               test: "test -e /opt/easy-rsa/build-key-server"
-              command: !Sub |
-                sed -i 's/--interact//g' /opt/easy-rsa/build-key-server
+              command:
+                - sed -i 's/--interact//g' /opt/easy-rsa/build-key-server
             06_generate_secrets_run_build-key-server:
               cwd: "/opt/easy-rsa"
               test: "test -e /opt/easy-rsa/build-key-server"
@@ -350,7 +324,7 @@ Resources:
               owner: root
               group: root
             /opt/easy-rsa/gen_ovpn_profile.sh:
-              content: !Sub |
+              content:
                 (cat /opt/easy-rsa/openvpn_client.conf
                 echo '<key>'
                 cat keys/clientuser.key
@@ -369,8 +343,8 @@ Resources:
             01_generate_client_update_build-key:
               cwd: "/opt/easy-rsa"
               test: "test -e /opt/easy-rsa/build-key"
-              command: !Sub |
-                sed -i 's/--interact//g' /opt/easy-rsa/build-key
+              command:
+                - sed -i 's/--interact//g' /opt/easy-rsa/build-key
             02_generate_client_run_build-key:
               cwd: "/opt/easy-rsa"
               test: "test -e /opt/easy-rsa/build-key"
@@ -463,8 +437,6 @@ Resources:
   # The policy which will be attached to our Lambda execution role
   # The Lambda function will need access to write output to CloudWatch Logs and full access to S3
   EmptyS3BucketExecutionPolicy:
-    DependsOn:
-    - EmptyS3BucketExecutionRole
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: EmptyS3BucketLogsRolePolicy
@@ -488,78 +460,14 @@ Resources:
   # The function will be invoked on stack creation, update, and deletion events fired from CloudFormation
   EmptyS3BucketLambda:
     Type: AWS::Lambda::Function
-    DependsOn:
-    - EmptyS3BucketExecutionRole
-    - EmptyS3BucketExecutionPolicy
     Properties:
       Timeout: 60
       Handler: index.handler
-      Runtime: "nodejs6.10"
+      Runtime: "python3.8"
       MemorySize: 128
       Code:
-        ZipFile: !Sub |
-          'use strict';
-          exports.handler = (event, context) => {
-              console.log(JSON.stringify(event));
-              var responseObject = {};
-              responseObject.event = event;
-              responseObject.context = context;
-              if (event.RequestType == "Delete") {
-                  console.log("Handle Delete Event");
-                  var AWS = require('aws-sdk');
-                  var s3Client = new AWS.S3();
-                  clearBucket(s3Client, event.ResourceProperties.S3BucketName, responseObject);
-              } else {
-                  console.log("Handle Create Event");
-                  sendResponse(responseObject);
-              }
-          };
-          function sendResponse(responseObject) {
-              var cfnResponse = require('cfn-response');
-              cfnResponse.send(responseObject.event, responseObject.context, cfnResponse.SUCCESS);
-          }
-          function deleteBucket(s3Client, bucket, responseObject) {
-              s3Client.deleteBucket({
-                  Bucket: bucket
-              }, function(err, data) {
-                  if (err) {
-                      console.log(err, err.stack);
-                  } else {
-                      console.log(data);
-                  }
-                  sendResponse(responseObject);
-              });
-          }
-          function clearBucket(s3Client, bucket, responseObject) {
-              s3Client.listObjects({
-                  Bucket: bucket
-              }, function(err, data) {
-                  if (err) {
-                      console.log("error listing bucket objects " + err);
-                      return;
-                  }
-                  var items = data.Contents;
-                  for (var i = 0; i < items.length; i += 1) {
-                      var deleteParams = {
-                          Bucket: bucket,
-                          Key: items[i].Key
-                      };
-                      deleteObject(s3Client, deleteParams);
-                  }
-              });
-              setTimeout(function() {
-                  deleteBucket(s3Client, bucket, responseObject);
-              }, 10000);
-          }
-          function deleteObject(s3Client, deleteParams) {
-              s3Client.deleteObject(deleteParams, function(err, data) {
-                  if (err) {
-                      console.log("Error Deleting Object: " + deleteParams.Key);
-                  } else {
-                    console.log("Deleted Object: " + deleteParams.Key);
-                  }
-              });
-          }
+        ZipFile:
+          echo "testy"
       Role: !GetAtt EmptyS3BucketExecutionRole.Arn
 
   # Custom resource for the EmptyS3BucketLambda lambda function
