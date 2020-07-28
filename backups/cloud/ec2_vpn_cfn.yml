@@ -189,9 +189,9 @@ Resources:
           "Fn::Base64":
             !Sub |
               #!/bin/bash
-              yum update -y aws-cfn-bootstrap
+              sudo apt update -y aws-cfn-bootstrap
               /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2OpenVPNInstance --configsets myCfnConfigSet --region ${AWS::Region}
-              yum -y update
+              sudo apt -y update
               /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2OpenVPNInstance --region ${AWS::Region}
 
     # The CloudFormation stack will wait to mark the EC2OpenVPNInstance as CREATE_COMPLETE until we recieve a signal from the instance, or 10 minutes elapses.
@@ -253,7 +253,7 @@ Resources:
               openvpn: []
           commands:
             01_install_software_install_easyrsa:
-              command: "yum install easy-rsa -y --enablerepo=epel"
+              command: "sudo apt install -y openvpn easy-rsa"
             02_install_software_copy_easyrsa:
               command: "cp -R /usr/share/easy-rsa/2.0 /opt/easy-rsa"
 
