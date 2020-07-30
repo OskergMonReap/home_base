@@ -1,6 +1,7 @@
 #!/bin/bash
 AMI=`cat /home/oskr_grme/.local/ami_id.txt`
-aws cloudformation create-stack --stack-name zcloud --template-body file://home/oskr_grme/.local/zcloud.cfn --parameters ParameterKey=AMI,ParameterValue=$AMI
+MYIP=`dig TXT +short o-o.myaddr.l.google.com @ns1.google.com | awk -F'"' '{ print $2}'`
+aws cloudformation create-stack --stack-name zcloud --template-body file://home/oskr_grme/.local/zcloud.cfn --parameters ParameterKey=AMI,ParameterValue=$AMI ParameterKey=MYIP,ParameterValue=$MYIP
 sleep 500
 INSTANCE=`aws cloudformation describe-stack-resource --stack-name zcloud --logical-resource-id ZFSInstance | jq '.StackResourceDetail.PhysicalResourceId'`
 IP=`aws ec2 describe-instances --instances $INSTANCE --query "Reservations[*].Instances[*].PublicIpAddress" --output=text`
