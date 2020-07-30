@@ -3,12 +3,16 @@ Local backups galore is nice, but to truly have piece of mind against even a cat
 AWS provides several storage services, and I will be exploring the best for my use cases. Below is a list of solutions I've come up with that I will be testing.
 
 ### Solution 1
-Design: 
+Design:
 - Custom AMI with ZFS, sanoid/syncoid installed
 - Local script triggered on a timer via cron
   - Use Cloudformation to spin up EC2 instance in us-east-2 based on our custom AMI
+    - Single `Parameter` correlating to AMI ID to be used will be read from file as part of script
   - Verify server is up/reachable, trigger syncoid to replicate ZFS snapshots to the instance
+  - Trigger new AMI creation from instance (snapshots of volumes are taken during process automatically)
+  - Get new AMI ID generated previous script and pipe it to a txt file
   - Delete Cloudformation stack
+**Sample script can be found [here](./cloud/zcloud_back.sh)**
 
 Benefits:
 - Incremental backups, push only what has changed
@@ -24,7 +28,7 @@ Design:
  ```
  zfs send -R zroot/home@autosnap | gzip -9 | openssl enc -aes-256-cbc -a -salt -k SomePassword | aws s3 cp --expected-size 400000000 - s3://zfs-repo/zroot_home.gz.ssl
  ```
- 
+
  Benefits:
  - Simplicity of single command/script
  - S3 with lifecycle management automation
