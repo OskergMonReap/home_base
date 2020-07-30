@@ -12,6 +12,7 @@ Design:
   - Trigger new AMI creation from instance (snapshots of volumes are taken during process automatically)
   - Get new AMI ID generated previous script and pipe it to a txt file
   - Delete Cloudformation stack
+
 **Sample script can be found [here](./cloud/zcloud_back.sh)**
 
 Benefits:
