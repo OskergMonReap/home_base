@@ -1,26 +1,27 @@
 # Offsite Backups
 Local backups galore is nice, but to truly have piece of mind against even a catastrophe that somehow would take out all my devices, remote backups is a must.
-AWS provides several storage services, and I will be exploring the best for my use cases. Below is a list of solutions I've come up with that I will be testing.
+AWS provides several storage services, and after some extensive testing (along with weighing cost/benefit for each) I have landed on a primary solution and a secondary solution which can be used ad-hoc.
 
-### Solution 1
+### Primary Solution
 Design:
 - Custom AMI with ZFS, sanoid/syncoid installed
 - Local script triggered on a timer via cron
   - Use Cloudformation to spin up EC2 instance in us-east-2 based on our custom AMI
-    - Single `Parameter` correlating to AMI ID to be used will be read from file as part of script
+    - `Parameter` correlating to AMI ID to be used will be read from file as part of script, IP will be pulled from `dig` command
   - Verify server is up/reachable, trigger syncoid to replicate ZFS snapshots to the instance
   - Trigger new AMI creation from instance (snapshots of volumes are taken during process automatically)
-  - Get new AMI ID generated previous script and pipe it to a txt file
+  - Get new AMI ID generated previous script and pipe it to a txt file, overwriting previous
   - Delete Cloudformation stack
 
-**Sample script can be found [here](./cloud/zcloud_back.sh)**
+*Sample script can be found [here](./cloud/zcloud_back.sh)*
 
 Benefits:
-- Incremental backups, push only what has changed
+- Incremental backups, push only what has changed after initial push
 - EBS Snapshots for point in time backups
 - Ephemeral server to keep cost down while keeping transfer speeds respectable
+- Script can be reused with minor changes and an additional txt file
 
-### Solution 2
+### Secondary Solution
 Design:
 - One-liner commandline alias/script that pipes `zfs send` to:
   - `gzip` for compression
@@ -34,17 +35,3 @@ Design:
  - Simplicity of single command/script
  - S3 with lifecycle management automation
  - Encrypted pre-flight
-
-### Solution 3
-#### 3A
-Design:
-- AWS Storage Gateway as VM on Desktop PC
-  - Always on, or triggered by script TBD
-- Mount /backups (which correlates to `zback` ZFS pool which is a mirror of two drives) to VM
-- Let the Storage Gateway replicate to S3
-
-#### 3B
-Design:
-- AWS Storage Gateway on Raspberry Pi 4 w/ 4 SATA drives configured as 2 ZFS mirrored pools
-- Replicate /backups (which correlates to `zback` ZFS pool on desktop) to the Pi
-- Let the Storage Gateway replicate to S3
