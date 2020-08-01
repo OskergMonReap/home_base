@@ -8,7 +8,7 @@ Requirements:
   - `jq`
   - `awscli`
   - `sanoid`/`syncoid`
-- IAM user with programmatic access and the following permissions (to be widdled down):
+- IAM user with programmatic access and the following permissions:
 ```
 {
    "Version": "2012-10-17",
@@ -18,19 +18,18 @@ Requirements:
             "Effect": "Allow",
             "Action": [
                 "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:DescribeInstances",
-                "ec2:StartInstances",
-                "ec2:CreateTags",
-                "ec2:RunInstances",
-                "ec2:StopInstances",
-                "ec2:RebootInstances",
-                "ec2:DescribeSecurityGroups",
                 "ec2:CreateImage",
-                "ec2:DeregisterImage",
                 "ec2:CreateSecurityGroup",
-                "ec2:ModifyInstanceAttribute",
-                "ec2:TerminateInstances",
+                "ec2:CreateTags",               
                 "ec2:DeleteSecurityGroup",
+                "ec2:DescribeInstances",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DeregisterImage",
+                "ec2:RebootInstances",
+                "ec2:RunInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances",
+                "ec2:TerminateInstances",
                 "cloudformation:CreateStack",                
                 "cloudformation:DeleteStack",
                 "cloudformation:DescribeStackResource"
