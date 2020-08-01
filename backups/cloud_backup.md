@@ -1,8 +1,45 @@
 # Offsite Backups
-Local backups galore is nice, but to truly have piece of mind against even a catastrophe that somehow would take out all my devices, remote backups is a must.
-AWS provides several storage services, and after some extensive testing (along with weighing cost/benefit for each) I have landed on a primary solution and a secondary solution which can be used ad-hoc.
+Local backups galore is nice, but to truly have piece of mind remote backups are a must.
+AWS provides several storage services, and after some extensive testing (along with weighing cost/benefit for each) I have landed on a primary solution and a secondary solution which can be used ad-hoc or in the event the primary solution breaks somehow.
 
 ### Primary Solution
+Requirements:
+- Following system packages must be installed:
+  - `jq`
+  - `awscli`
+  - `sanoid`/`syncoid`
+- IAM user with programmatic access and the following permissions:
+```
+{
+   "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:CreateImage",
+                "ec2:CreateSecurityGroup",
+                "ec2:CreateTags",               
+                "ec2:DeleteSecurityGroup",
+                "ec2:DescribeInstances",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DeregisterImage",
+                "ec2:RebootInstances",
+                "ec2:RunInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances",
+                "ec2:TerminateInstances",
+                "cloudformation:CreateStack",                
+                "cloudformation:DeleteStack",
+                "cloudformation:DescribeStackResource"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
 Design:
 - Custom AMI with ZFS, sanoid/syncoid installed
 - Local script triggered on a timer via cron
