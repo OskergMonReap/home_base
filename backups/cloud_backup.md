@@ -3,6 +3,16 @@ Local backups galore is nice, but to truly have piece of mind against even a cat
 AWS provides several storage services, and after some extensive testing (along with weighing cost/benefit for each) I have landed on a primary solution and a secondary solution which can be used ad-hoc.
 
 ### Primary Solution
+Requirements:
+- Following system packages must be installed:
+  - `jq`
+  - `awscli`
+  - `sanoid`/`syncoid`
+- IAM user with programmatic access and the following minimum permissions:
+```
+TO-DO # Use CloudTrail and verify permissions used and craft IAM policy
+```
+
 Design:
 - Custom AMI with ZFS, sanoid/syncoid installed
 - Local script triggered on a timer via cron
