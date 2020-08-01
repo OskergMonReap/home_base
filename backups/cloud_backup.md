@@ -1,6 +1,6 @@
 # Offsite Backups
-Local backups galore is nice, but to truly have piece of mind against even a catastrophe that somehow would take out all my devices, remote backups is a must.
-AWS provides several storage services, and after some extensive testing (along with weighing cost/benefit for each) I have landed on a primary solution and a secondary solution which can be used ad-hoc.
+Local backups galore is nice, but to truly have piece of mind remote backups are a must.
+AWS provides several storage services, and after some extensive testing (along with weighing cost/benefit for each) I have landed on a primary solution and a secondary solution which can be used ad-hoc or in the event the primary solution breaks somehow.
 
 ### Primary Solution
 Requirements:
@@ -8,9 +8,37 @@ Requirements:
   - `jq`
   - `awscli`
   - `sanoid`/`syncoid`
-- IAM user with programmatic access and the following minimum permissions:
+- IAM user with programmatic access and the following permissions (to be widdled down):
 ```
-TO-DO # Use CloudTrail and verify permissions used and craft IAM policy
+{
+   "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:DescribeInstances",
+                "ec2:StartInstances",
+                "ec2:CreateTags",
+                "ec2:RunInstances",
+                "ec2:StopInstances",
+                "ec2:RebootInstances",
+                "ec2:DescribeSecurityGroups",
+                "ec2:CreateImage",
+                "ec2:DeregisterImage",
+                "ec2:CreateSecurityGroup",
+                "ec2:ModifyInstanceAttribute",
+                "ec2:TerminateInstances",
+                "ec2:DeleteSecurityGroup",
+                "cloudformation:CreateStack",                
+                "cloudformation:DeleteStack",
+                "cloudformation:DescribeStackResource"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
 ```
 
 Design:
