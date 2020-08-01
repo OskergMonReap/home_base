@@ -38,5 +38,5 @@ fi
 aws --profile zfs ec2 create-image --instance-id $INSTANCE --name "zcloud-$HOSTNAME-$(date -I)" --description "Zcloud syncoid replication target, built on $(date -I'minutes') for $HOSTNAME" | jq '.ImageId' | sed -e 's/^"//' -e 's/"$//'> /home/oskr_grme/.local/ami_id.txt
 sleep 60
 aws --profile zfs cloudformation delete-stack --stack-name $HOSTNAME-zcloud >> $LOGFILE 2>&1
-echo "INFO: ZFS replication to AWS successfully completed on $(date -I'minutes')" >> $LOGFILE 2>&1
-echo "-------------------------------------------" >> $LOGFILE 2>&1
+echo "INFO: ZFS replication to AWS successfully completed on $(date -I'minutes')" >> $LOGFILE
+echo "-------------------------------------------" >> $LOGFILE
