@@ -9,7 +9,6 @@ a) AMI=${OPTARG};;
 esac
 done
 
-echo "ZCloud Backup script is starting at $(date -I'minutes' | sed 's/......$//')" >> $LOGFILE
 
 if [[ -n $LOGFILE ]]
 then
@@ -18,6 +17,8 @@ else
     LOGFILE='/home/oskr_grme/.local/logs/zcloud.log'
     echo "INFO: Logfile set to: $LOGFILE" >> $LOGFILE
 fi
+
+echo "ZCloud Backup script is starting at $(date -I'minutes' | sed 's/......$//')" >> $LOGFILE
 
 if [[ -n $POOL ]]
 then
