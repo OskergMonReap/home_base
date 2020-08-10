@@ -83,7 +83,7 @@ fi
 
 if [[ $IP =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
 then
-    syncoid -R --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=LogLevel=ERROR --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no $POOL ubuntu@$IP:zcloud/$POOL >> $LOGFILE 2>&1
+    syncoid -- quiet --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no $POOL ubuntu@$IP:zcloud/$POOL >> $LOGFILE 2>&1
 else
     echo "ERROR: Invalid IP address for EC2 instance: $IP" >> $LOGFILE
     exit 1
