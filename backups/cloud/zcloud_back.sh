@@ -13,7 +13,7 @@ done
 if [[ -n $LOGFILE ]]
 then
     LOGFILE=$LOGFILE
-    echo "INFO: Parameter for logfile passed to command, succesfully set." >> $LOGFILE
+    echo "INFO: Parameter for logfile passed to script, succesfully set." >> $LOGFILE
 else
     LOGFILE='/home/oskr_grme/.local/logs/zcloud.log'
 fi
@@ -24,7 +24,7 @@ echo "ZCloud Backup script is starting at $(date -I'minutes' | sed 's/......$//'
 if [[ -n $POOL ]]
 then
     POOL=$POOL
-    echo "INFO: Parameter for ZFS pool passed to command, succesfully set." >> $LOGFILE
+    echo "INFO: Parameter for ZFS pool passed to script, succesfully set." >> $LOGFILE
 else
     POOL=zroot
 fi
@@ -33,7 +33,7 @@ echo "INFO: Replication source set to pool: $POOL" >> $LOGFILE
 if [[ -n $AMI ]]
 then
     AMI=$AMI
-    echo "INFO: Parameter for ZFS pool passed to command, succesfully set." >> $LOGFILE
+    echo "INFO: Parameter for ZFS pool passed to script, succesfully set." >> $LOGFILE
 else
     AMI=`cat /home/oskr_grme/.local/ami_id.txt`
 fi
