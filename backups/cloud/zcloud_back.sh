@@ -102,7 +102,7 @@ else
     exit 1
 fi
 
-echo "INFO: New AMI, $NEW_AMI, is in progress.. succesfully started process" >> $LOGFILE 2>&1
+echo "INFO: New AMI, $NEW_AMI, is in progress.. succesfully started process" >> $LOGFILE
 
 sleep 60
 
