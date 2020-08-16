@@ -1,9 +1,10 @@
 #!/bin/bash
-while getopts p:l:a: option
+while getopts p:d:l:a: option
 do
 case "${option}"
 in
 p) POOL=${OPTARG};;
+d) DATASET=${OPTARG};;
 l) LOGFILE=${OPTARG};;
 a) AMI=${OPTARG};;
 esac
@@ -29,6 +30,15 @@ else
     POOL=zroot
 fi
 echo "INFO: Replication source set to pool: $POOL" >> $LOGFILE
+
+if [[ -n $DATASET ]]
+then
+    DATASET=$DATASET
+    echo "INFO: Parameter for ZFS dataset passed to script, succesfully set." >> $LOGFILE
+else
+    DATASET=home
+fi
+echo "INFO: Replication dataset set to: $DATASET" >> $LOGFILE
 
 if [[ -n $AMI ]]
 then
@@ -84,21 +94,21 @@ fi
 if [[ $IP =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
 then
     echo "INFO: Starting ZFS pool replication via syncoid.. In progress..." >> $LOGFILE
-    syncoid --quiet --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no $POOL ubuntu@$IP:zcloud/$POOL >> $LOGFILE 2>&1
+    syncoid --quiet --no-stream --no-sync-snap --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no $POOL/$DATASET ubuntu@$IP:zcloud/$DATASET >> $LOGFILE 2>&1
 else
     echo "ERROR: Invalid IP address for EC2 instance: $IP" >> $LOGFILE
     echo "Script failed due to invalid EC2 Instance Public IP Address. Exiting..." >> $LOGFILE
     exit 1
 fi
 
-aws --profile zfs ec2 create-image --instance-id $INSTANCE --name "zcloud-$HOSTNAME-$(date -I'minutes' | sed 's/......$//')" --description "Zcloud syncoid replication target, built on $(date -I'minutes' | sed 's/......$//') for $HOSTNAME" | jq '.ImageId' | sed -e 's/^"//' -e 's/"$//'> /home/oskr_grme/.local/ami_id.txt
+aws --profile zfs ec2 create-image --instance-id $INSTANCE --name "zcloud-$HOSTNAME-$DATASET-$(date -I'minutes' | sed 's/......$//')" --description "Zcloud syncoid replication target, built on $(date -I'minutes' | sed 's/......$//') for $HOSTNAME" | jq '.ImageId' | sed -e 's/^"//' -e 's/"$//'> /home/oskr_grme/.local/ami_id.txt
 
 NEW_AMI=`cat /home/oskr_grme/.local/ami_id.txt`
 
 if [[ $NEW_AMI =~ ^(ami)-[a-zA-Z0-9]*$ ]]
 then
     echo "INFO: New AMI creation has started! At $(date -I'minutes' | sed 's/......$//') $NEW_AMI was triggered" >> $LOGFILE
-    aws --profile zfs ec2 create-tags --resources $NEW_AMI --tags Key=\"Name\",Value=\"$HOSTNAME\ $POOL\ $(date -I'minutes' | sed 's/......$//')\" >> $LOGFILE 2>&1
+    aws --profile zfs ec2 create-tags --resources $NEW_AMI --tags Key=\"Name\",Value=\"$HOSTNAME\ $POOL/$DATASET\ $(date -I'minutes' | sed 's/......$//')\" >> $LOGFILE 2>&1
 else
     echo "ERROR: Invalid AMI ID, please check ami_id.txt: $AMI" >> $LOGFILE
     exit 1
@@ -110,6 +120,6 @@ sleep 60
 
 aws --profile zfs cloudformation delete-stack --stack-name $HOSTNAME-zcloud >> $LOGFILE 2>&1
 
-echo "INFO: ZFS replication to AWS successfully completed on $(date -I'minutes' | sed 's/......$//')" >> $LOGFILE
+echo "INFO: ZFS replication to AWS successfully completed on $(date -I'minutes' | sed 's/......$//') for $HOSTNAME - $POOL/$DATASET" >> $LOGFILE
 
 echo "-------------------------------------------" >> $LOGFILE
