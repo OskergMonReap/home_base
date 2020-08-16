@@ -84,7 +84,7 @@ fi
 if [[ $IP =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
 then
     echo "INFO: Starting ZFS pool replication via syncoid.. In progress..." >> $LOGFILE
-    syncoid -- quiet --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no $POOL ubuntu@$IP:zcloud/$POOL >> $LOGFILE 2>&1
+    syncoid --quiet --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no $POOL ubuntu@$IP:zcloud/$POOL >> $LOGFILE 2>&1
 else
     echo "ERROR: Invalid IP address for EC2 instance: $IP" >> $LOGFILE
     echo "Script failed due to invalid EC2 Instance Public IP Address. Exiting..." >> $LOGFILE
