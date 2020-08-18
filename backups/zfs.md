@@ -75,7 +75,7 @@ Configuration file `/etc/sanoid/sanoid.conf`:
 
 Syncoid push command for asynchronous incremental replication, local filesystems (ie backup pool on host machine):
 ```
-syncoid zroot/data backups/data
+syncoid --no-stream --no-sync-snap -r zroot/data backups/data
 ```
 
 Syncoid push command to remote host:
