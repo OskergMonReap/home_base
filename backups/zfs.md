@@ -80,5 +80,5 @@ syncoid zroot/data backups/data
 
 Syncoid push command to remote host:
 ```
-syncoid zroot/data root@1.1.1.1:/backups/data
+syncoid --no-stream --no-sync-snap -r zroot/data root@1.1.1.1:zback/data
 ```
