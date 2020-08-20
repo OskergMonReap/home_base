@@ -72,9 +72,9 @@ fi
 echo "INFO: Starting creation of CloudFormation stack..." >> $LOGFILE
 aws --profile zfs cloudformation create-stack --stack-name $HOSTNAME-zcloud --template-body file:///home/oskr_grme/.local/zcloud.cfn.yml --parameters ParameterKey=AMI,ParameterValue=$AMI ParameterKey=MYIP,ParameterValue=$MYIP >> $LOGFILE 2>&1
 echo "INFO: CloudFormation stack succesfully launched" >> $LOGFILE
-echo "INFO: Cooldown reached, allowing resources time to bootstrap. Sleeping for 300 seconds..." >> $LOGFILE
+echo "INFO: Cooldown reached, allowing resources time to bootstrap. Sleeping for 140 seconds..." >> $LOGFILE
 
-sleep 300
+sleep 140
 
 echo "INFO: Starting ZFS replication to AWS: $(date -I'minutes' | sed 's/......$//')" >> $LOGFILE
 
@@ -94,14 +94,14 @@ fi
 if [[ $IP =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]
 then
     echo "INFO: Starting ZFS pool replication via syncoid.. In progress..." >> $LOGFILE
-    syncoid --quiet --no-stream --no-sync-snap --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no $POOL/$DATASET ubuntu@$IP:zcloud/$DATASET >> $LOGFILE 2>&1
+    syncoid --quiet --force-delete --no-sync-snap --sshkey=/home/oskr_grme/.ssh/zfsbackup.pem --sshoption=UserKnownHostsFile=/dev/null --sshoption=StrictHostKeyChecking=no -r $POOL/$DATASET ubuntu@$IP:zcloud/$DATASET >> $LOGFILE 2>&1
 else
     echo "ERROR: Invalid IP address for EC2 instance: $IP" >> $LOGFILE
     echo "Script failed due to invalid EC2 Instance Public IP Address. Exiting..." >> $LOGFILE
     exit 1
 fi
 
-aws --profile zfs ec2 create-image --instance-id $INSTANCE --name "zcloud-$HOSTNAME-$DATASET-$(date -I'minutes' | sed 's/......$//')" --description "Zcloud syncoid replication target, built on $(date -I'minutes' | sed 's/......$//') for $HOSTNAME" | jq '.ImageId' | sed -e 's/^"//' -e 's/"$//'> /home/oskr_grme/.local/ami_id.txt
+aws --profile zfs ec2 create-image --instance-id $INSTANCE --name "zcloud-$HOSTNAME-$DATASET-$(date -I'minutes' | sed 's/......$//' | sed 's/T/-/' | sed 's/:/-/')" --description "Zcloud syncoid replication target, built on $(date -I'minutes' | sed 's/......$//') for $HOSTNAME" | jq '.ImageId' | sed -e 's/^"//' -e 's/"$//'> /home/oskr_grme/.local/ami_id.txt
 
 NEW_AMI=`cat /home/oskr_grme/.local/ami_id.txt`
 
