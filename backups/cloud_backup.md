@@ -24,6 +24,7 @@ Requirements:
                 "ec2:CreateSecurityGroup",
                 "ec2:CreateTags",               
                 "ec2:DeleteSecurityGroup",
+                "ec2:DeleteSnapshot",
                 "ec2:DescribeInstances",
                 "ec2:DescribeSecurityGroups",
                 "ec2:DeregisterImage",
