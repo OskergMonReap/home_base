@@ -1,8 +1,8 @@
 # Table of Contents
 Administrative notes for home devices, applications and all around tech-meanderings.
 
-- [Applications](./apps)
-- [Backups](./backups)
-- [Configurations](./configs)
-- [Devices Setup](./devices)
-- [Docker Ecosystem](./docker)
+- [Applications](./apps/README.md)
+- [Backups](./backups/README.md)
+- [Configurations](./configs/README.md)
+- [Devices Setup](./devices/README.md)
+- [Docker Ecosystem](./docker/README.md)

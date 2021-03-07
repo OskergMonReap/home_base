@@ -31,8 +31,8 @@ services:
     restart: unless-stopped
     image: postgres
     environment:
-      - POSTGRES_USER=oskr_grme
-      - POSTGRES_PASSWORD=BFRTHA8xyq%2QjWg#5s5
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=somepassword
     ports:
       - 5432:5432
     volumes:

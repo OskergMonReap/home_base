@@ -2,6 +2,8 @@
 Local backups galore is nice, but to truly have piece of mind remote backups are a must.
 AWS provides several storage services, and after some extensive testing (along with weighing cost/benefit for each) I have landed on a primary solution and a secondary solution which can be used ad-hoc or in the event the primary solution breaks somehow.
 
+> *TO-DO: Implement clean-up, user-definable, of previous AMI's and their subsequent EBS Volume Snapshots.. can be based on date, however since snapshots are the true point-in-time backup.. keeping new AMI and one prior should suffice*
+
 ### Primary Solution
 Requirements:
 - Following system packages must be installed:
@@ -22,6 +24,7 @@ Requirements:
                 "ec2:CreateSecurityGroup",
                 "ec2:CreateTags",               
                 "ec2:DeleteSecurityGroup",
+                "ec2:DeleteSnapshot",
                 "ec2:DescribeInstances",
                 "ec2:DescribeSecurityGroups",
                 "ec2:DeregisterImage",
