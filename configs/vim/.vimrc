@@ -40,16 +40,17 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-jdaddy'
 Plugin 'alvan/vim-closetag'
 Plugin 'raimondi/delimitmate'
+Plugin 'speshak/vim-cfn'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-notes'
 Plugin 'thaerkh/vim-workspace'
 Plugin 'Shougo/vimproc.vim'
 Plugin 'idanarye/vim-vebugger'
 Plugin 'kevinhui/vim-docker-tools'
-Plugin 'nlknguyen/cloudformation-syntax.vim'
 Plugin 'tpope/vim-rhubarb'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+Plugin 'iamcco/markdown-preview.vim'
 
 " Start platformio test plugins for C and other embedded
 Plugin 'prabirshrestha/async.vim'
@@ -99,6 +100,7 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
+let g:ycm_python_binary_path = '/usr/bin/python3'
 let g:closetag_filenames = '*.html,*.xhtml,*.phtml'
 let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
 let g:closetag_filetypes = 'html,xhtml,phtml'
@@ -111,6 +113,7 @@ let g:airline_theme='jellybeans'
 let g:syntastic_yaml_checkers = ['yamllint']
 let g:syntastic_python_checkers = ['python', 'flake8', 'bandit']
 let g:syntastic_htmldjango_checkers = ['htmldjango', 'html/eslint']
+let g:syntastic_cloudformation_checkers = ['cfn_lint']
 let g:notes_directories = ['~/.Notes']
 let g:workspace_session_directory = $HOME . '/.vim/sessions/'
 let g:UltiSnipsExpandTrigger="<f6>"
@@ -131,6 +134,8 @@ set foldlevel=99
 nnoremap <space> za
 set hidden
 nnoremap <leader>s :ToggleWorkspace<CR>
+nnoremap <silent> <leader>= :exe "resize " . (winheight(0) * 3/2)<CR>
+nnoremap <silent> <leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 nmap <leader>T :enew<CR>
 nmap <leader>bq :bp <BAR> bd #<CR>
 nmap <leader>bl :ls<CR>
@@ -144,6 +149,31 @@ nmap <F5> <Esc>:NERDTreeToggle<CR>
 nmap <leader>d :DockerToolsToggle<CR>
 nmap <leader>c :SyntasticToggleMode<CR>
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
+
+" Settings for markdown preview
+let g:mkdp_auto_start = 0
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 1
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_browser = ''
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_preview_options = {
+    \ 'mkit': {},
+    \ 'katex': {},
+    \ 'uml': {},
+    \ 'maid': {},
+    \ 'disable_sync_scroll': 0,
+    \ 'sync_scroll_type': 'middle',
+    \ 'hide_yaml_meta': 1,
+    \ 'sequence_diagrams': {},
+    \ 'flowchart_diagrams': {},
+    \ 'content_editable': v:false
+    \ }
+let g:mkdp_page_title = '「${name}」'
+
+nmap <C-p> :MarkdownPreview<CR>
+nmap <C-o> :MarkdownPreviewStop<CR>
 
 " Settings for Syntastic
 set statusline+=%#warningmsg#
