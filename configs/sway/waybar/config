@@ -2,7 +2,7 @@
     "position": "bottom",
     "modules-left": ["sway/workspaces", "sway/mode"],
     "modules-center": [],
-    "modules-right": [ "memory", "cpu",  "disk", "network", "pulseaudio", "temperature", "clock", "tray", "battery",  "custom/power"],
+    "modules-right": [ "memory", "cpu",  "disk", "network", "pulseaudio", "temperature", "clock", "battery", "tray", "custom/power"],
     // Modules configuration
     // "sway/workspaces": {
     //     "disable-scroll": true,
@@ -16,7 +16,6 @@
         "format-wifi": "{ipaddr} ",
         "format-ethernet": "{ifname} ",
         "format-disconnected": "", 
-        "max-length": 50,
         "on-click": "alacritty -e 'nmtui'"
     },
     "disk": {

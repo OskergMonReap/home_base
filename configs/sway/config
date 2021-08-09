@@ -55,6 +55,7 @@ output * bg /home/oskr_grme/.config/backgrounds/missing_link.jpg fill
 exec pamac-tray-plasma
 exec nm-applet --indicator
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec_always ~/.local/copyq.sh
 
 ### Input configuration
 #
@@ -91,6 +92,9 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
     # Start your browser
     bindsym $mod+f2 exec $browser
+
+    # Copyq Toggle
+    bindsym $mod+z exec copyq toggle
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -232,5 +236,8 @@ bar {
         inactive_workspace #32323200 #32323200 #5c5c5c
     }
 }
+
+# Application Window Customizations
+for_window [app_id="copyq"] floating enable
 
 include /etc/sway/config.d/*

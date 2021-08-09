@@ -47,23 +47,25 @@ window#waybar {
     padding: 0 8px;
 }
 #battery {
-    padding: 0 15px;
+    padding: 0 12px;
 }
 #cpu {
-    padding: 0 19px;
+    padding: 0 12px;
 }
 #memory {
     padding: 0 5px;
 }
 #temperature,
 #network {
-    padding: 0 15px;
+    padding: 0 18px;
 }
 #pulseaudio {
     padding: 0 10px;
 }
 #custom-media,
-#tray
+#tray {
+    padding: 0 10px
+}
 #mode,
 #custom-power,
 #idle_inhibitor {
@@ -77,7 +79,7 @@ window#waybar {
     background-color: rgba(0,119,179,0.6);
     border-radius: 50px;
     margin: 5px 5px;
-    padding: 1px 3px;
+    padding: 1px 12px;
 }
 /*-----Indicators----*/
 #idle_inhibitor.activated {
