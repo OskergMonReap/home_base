@@ -22,7 +22,7 @@
     ### Geometry ###
 
     # dynamic width from 0 to 300
-    width = (0, 600)
+    width = (0, 900)
     # constant width of 300
     # width = 300
 
@@ -151,7 +151,7 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<b>%s</b>\n%b"
+    format = "%a\n<b>%s</b>\n%b"
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
